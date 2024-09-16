@@ -3,23 +3,23 @@
 	"id": "exploration_revamped",
 	"version": "${version}",
 	"name": "Exploration_revamped",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Change a lot of aspects of the game about exploration to improve the experience.",
 	"authors": [
-		"Me!"
+		"Binaris"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://binaris.carrd.co",
+		"sources": "https://github.com/Binaris00/ExplorationRevamped"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT License",
 	"icon": "assets/exploration_revamped/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"binaris.exploration_revamped.Exploration_revamped"
+			"binaris.exploration_revamped.ERCommonMod"
 		],
 		"client": [
-			"binaris.exploration_revamped.Exploration_revampedClient"
+			"binaris.exploration_revamped.ERClientMod"
 		],
 		"fabric-datagen": [
 			"binaris.exploration_revamped.Exploration_revampedDataGenerator"
