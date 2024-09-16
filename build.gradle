@@ -22,6 +22,7 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
+	accessWidenerPath = file("src/main/resources/exploration_revamped.accesswidener")
 
 }
 
