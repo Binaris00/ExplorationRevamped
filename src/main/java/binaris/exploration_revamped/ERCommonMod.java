@@ -1,5 +1,6 @@
 package binaris.exploration_revamped;
 
+import binaris.exploration_revamped.registries.ItemRegistries;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.loader.api.FabricLoader;
@@ -14,6 +15,8 @@ public class ERCommonMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Initializing Exploration Revamped");
+		EREventsHandler.init();
+		ItemRegistries.init();
 	}
 
 	public static void logDebug(String message) {
