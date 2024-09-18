@@ -10,3 +10,6 @@ accessible    field    net/minecraft/village/TradeOffer    demandBonus    I
 
 accessible    method    net/minecraft/entity/passive/MerchantEntity    produceParticles    (Lnet/minecraft/particle/ParticleEffect;)V
 
+mutable    field    net/minecraft/client/render/entity/BoatEntityRenderer    texturesAndModels    Ljava/util/Map;
+accessible    field    net/minecraft/client/render/entity/BoatEntityRenderer    texturesAndModels    Ljava/util/Map;
+
