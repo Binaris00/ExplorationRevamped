@@ -18,6 +18,7 @@ public class IronBoatEntity extends BoatEntity {
     public IronBoatEntity(World world, Vec3d vec3d){
         super(EntityRegistries.IRON_BOAT_ENTITY, world);
         this.setPos(vec3d.x, vec3d.y, vec3d.z);
+        this.setVelocity(Vec3d.ZERO);
         this.prevX = vec3d.x;
         this.prevY = vec3d.y;
         this.prevZ = vec3d.z;
@@ -31,5 +32,10 @@ public class IronBoatEntity extends BoatEntity {
     @Override
     public ItemStack getPickBlockStack() {
         return new ItemStack(ItemRegistries.IRON_BOAT_ITEM);
+    }
+
+    @Override
+    public Type getVariant() {
+        return Type.OAK;
     }
 }

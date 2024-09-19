@@ -2,14 +2,17 @@ package binaris.exploration_revamped.item;
 
 import binaris.exploration_revamped.entity.IronBoatEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
@@ -31,6 +34,7 @@ public class IronBoatItem extends Item{
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemstack = user.getStackInHand(hand);
         BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.ANY);
+        Vec3d vec3d = hitResult.getPos().add(0, 2, 0);  // Offset the position slightly above the ground
         if (hitResult.getType() == BlockHitResult.Type.MISS) {
             return TypedActionResult.pass(itemstack);
         } else {
@@ -48,15 +52,15 @@ public class IronBoatItem extends Item{
             }
 
             if (hitResult.getType() == BlockHitResult.Type.BLOCK) {
-                IronBoatEntity entity = new IronBoatEntity(world, hitResult.getPos());
+                IronBoatEntity entity = createEntity(world, vec3d, itemstack, user);
                 entity.setYaw(user.getYaw());
 
-                if (!world.isSpaceEmpty(entity, entity.getBoundingBox().expand((-0.1D)))) {
+                if (!world.isSpaceEmpty(entity, entity.getBoundingBox())) {
                     return TypedActionResult.fail(itemstack);
                 } else {
                     if (!world.isClient) {
                         world.spawnEntity(entity);
-                        world.emitGameEvent(user, GameEvent.ENTITY_PLACE, hitResult.getPos());
+                        world.emitGameEvent(user, GameEvent.ENTITY_PLACE, vec3d);
                         itemstack.decrementUnlessCreative(1, user);
                     }
                     user.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -66,5 +70,14 @@ public class IronBoatItem extends Item{
                 return TypedActionResult.pass(itemstack);
             }
         }
+    }
+
+    private IronBoatEntity createEntity(World world, Vec3d vec3d, ItemStack stack, PlayerEntity player) {
+        IronBoatEntity boatEntity = new IronBoatEntity(world, vec3d);
+        if (world instanceof ServerWorld serverWorld) {
+            EntityType.copier(serverWorld, stack, player).accept(boatEntity);
+        }
+
+        return boatEntity;
     }
 }
