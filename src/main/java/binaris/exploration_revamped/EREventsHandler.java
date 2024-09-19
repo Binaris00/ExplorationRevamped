@@ -43,19 +43,21 @@ public final class EREventsHandler {
 
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 
-            if(entity instanceof VillagerEntity villager && villager.getExperience() == 0 && player.getMainHandStack().getItem() instanceof RerollItem){
+            if(entity instanceof VillagerEntity villager && player.getMainHandStack().getItem() instanceof RerollItem rerollItem && player.getItemCooldownManager().isCoolingDown(rerollItem)){
                 if (world.isClient) {
                     villager.produceParticles(ParticleTypes.HAPPY_VILLAGER);
                     return ActionResult.SUCCESS;
                 }
 
                 TradeOfferList offer = new TradeOfferList();
+                villager.setExperience(0);
                 ((MerchantEntityAccessor)villager).setOffers(offer);
                 ((VillagerEntityInvoker) villager).invokeFillRecipes();
                 ((VillagerEntityInvoker) villager).invokePrepareOffersFor(player);
 
                 ItemStack stack = player.getMainHandStack();
                 stack.decrement(1);
+                player.getItemCooldownManager().set(stack.getItem(), 140);
 
                 return ActionResult.SUCCESS;
             }

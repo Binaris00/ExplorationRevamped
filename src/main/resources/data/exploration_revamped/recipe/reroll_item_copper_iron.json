@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    "ICI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_block"
+    }
+  },
+  "result": {
+    "id": "exploration_revamped:reroll_item"
+  },
+  "show_notification": true
+}

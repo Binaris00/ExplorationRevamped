@@ -9,7 +9,9 @@
     "EntityMixin",
     "FireworRocketItemMixin",
     "FurnaceMinecartEntityMixin",
+    "VillagerEntityMixin",
     "accessor.MerchantEntityAccessor",
+    "accessor.VillagerEntityAccessor",
     "accessor.VillagerEntityInvoker"
   ],
   "injectors": {
