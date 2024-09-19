@@ -1,3 +1,6 @@
 {
-  "item.exploration_revamped.reroll_item": "Reroll Item"
+  "itemgroup.exploration_revamped.group": "Exploration Revamped",
+
+  "item.exploration_revamped.reroll_item": "Reroll Item",
+  "item.exploration_revamped.sculk_compass": "Sculk Compass"
 }
