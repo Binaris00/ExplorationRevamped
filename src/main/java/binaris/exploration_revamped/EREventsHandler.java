@@ -43,8 +43,6 @@ public final class EREventsHandler {
 
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 
-            ERCommonMod.logDebug("AttackEntityCallback");
-
             if(entity instanceof VillagerEntity villager && villager.getExperience() == 0 && player.getMainHandStack().getItem() instanceof RerollItem){
                 if (world.isClient) {
                     villager.produceParticles(ParticleTypes.HAPPY_VILLAGER);

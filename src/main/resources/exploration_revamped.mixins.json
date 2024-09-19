@@ -3,10 +3,12 @@
   "package": "binaris.exploration_revamped.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AbstractMinecartEntityMixin",
     "BoatEntityMixin",
     "BoatItemMixin",
     "EntityMixin",
     "FireworRocketItemMixin",
+    "FurnaceMinecartEntityMixin",
     "accessor.MerchantEntityAccessor",
     "accessor.VillagerEntityInvoker"
   ],

@@ -30,7 +30,7 @@ public class MouseMixin {
 
     @Inject(method = "onMouseScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;scrollInHotbar(D)V"), cancellable = true)
     private void onScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
-        float d = (float) ((MinecraftClient.getInstance().options.discreteMouseScroll.getValue() ? Math.signum(vertical) : vertical) * MinecraftClient.getInstance().options.mouseWheelSensitivity.getValue());
+        float d = (float) ((MinecraftClient.getInstance().options.getDiscreteMouseScroll().getValue() ? Math.signum(vertical) : vertical) * MinecraftClient.getInstance().options.getMouseWheelSensitivity().getValue());
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (player != null && player.isSwimming()) {
@@ -51,7 +51,7 @@ public class MouseMixin {
             cursorXSmoother.clear();
             return flySensitivity;
         } else if (player.isUsingSpyglass()) {
-            double sensitivity = MinecraftClient.getInstance().options.mouseSensitivity.getValue() * .6 + .2;
+            double sensitivity = MinecraftClient.getInstance().options.getMouseSensitivity().getValue() * .6 + .2;
             double spyglassSensitivity = sensitivity * ERClientMod.MULTIPLIER;
             cursorXSmoother.clear();
             return cursorDeltaX * spyglassSensitivity;
@@ -67,7 +67,7 @@ public class MouseMixin {
             cursorYSmoother.clear();
             return flySensitivity;
         } else if (player.isUsingSpyglass()) {
-            double sensitivity = MinecraftClient.getInstance().options.mouseSensitivity.getValue() * .6 + .2;
+            double sensitivity = MinecraftClient.getInstance().options.getMouseSensitivity().getValue() * .6 + .2;
             double spyglassSensitivity = sensitivity * ERClientMod.MULTIPLIER;
             cursorYSmoother.clear();
             return cursorDeltaY * spyglassSensitivity;
