@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "exploration_revamped:item/sculk_compass/compass_06"
-  }
-}

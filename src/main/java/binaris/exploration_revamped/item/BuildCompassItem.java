@@ -6,22 +6,18 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
-
-import java.util.List;
 
 public class BuildCompassItem extends Item{
     public static final String STRUCTURE_KEY = "structure_key";
@@ -57,7 +53,6 @@ public class BuildCompassItem extends Item{
                     nbt.putLong(STRUCTURE_POS, this.structurePos.asLong());
 
                     stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
-                    //user.sendMessage(Text.literal("Structure found at: " + this.structurePos.getX() + " " + this.structurePos.getY() + " " + this.structurePos.getZ()), true);
                 }
             }
         }
@@ -68,11 +63,5 @@ public class BuildCompassItem extends Item{
 
     public static Pair<BlockPos, RegistryEntry<Structure>> findNearestMapStructure(ServerWorld serverWorld, RegistryEntryList<Structure> registryEntryList, BlockPos pos) {
         return serverWorld.getChunkManager().getChunkGenerator().locateStructure(serverWorld, registryEntryList, pos, 100, false);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        if(!findedStructure) tooltip.add(Text.of("Right click to find nearest " + this.structureKey.toString() + " structure"));
-        else tooltip.add(Text.of("Structure found at: " + this.structurePos.getX() + " " + this.structurePos.getY() + " " + this.structurePos.getZ()));
     }
 }
