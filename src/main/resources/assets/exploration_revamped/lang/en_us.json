@@ -4,6 +4,7 @@
   "item.exploration_revamped.reroll_item": "Reroll Item",
   "item.exploration_revamped.reroll.tooltip": "Hit to any villager with a job to reroll his trades.",
 
+  "item.exploration_revamped.sculk_compass": "Sculk Compass",
 
-  "item.exploration_revamped.sculk_compass": "Sculk Compass"
+  "boat.entity.exploration_revamped.durability_message": "Boat durability: %s minutes left"
 }

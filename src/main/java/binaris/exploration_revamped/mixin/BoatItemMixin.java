@@ -2,22 +2,30 @@ package binaris.exploration_revamped.mixin;
 
 import binaris.exploration_revamped.entity.IronBoatEntity;
 import binaris.exploration_revamped.item.IronBoatItem;
+import binaris.exploration_revamped.registries.ItemRegistries;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.BoatItem;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BoatItem.class)
 public class BoatItemMixin {
-    @Unique
-    private BoatItem boatItem = (BoatItem)(Object)this;
+    @Inject(method = "createEntity", at = @At("HEAD"), cancellable = true)
+    public void ER$createEntity(World world, HitResult hitResult, ItemStack stack, PlayerEntity player, CallbackInfoReturnable<BoatEntity> cir) {
+        if(stack.getItem() == ItemRegistries.IRON_BOAT_ITEM) {
+            NbtCompound nbt = stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+            int durability = nbt.contains("Durability") ? nbt.getInt("Durability") : IronBoatItem.DURABILITY_DEFAULT;
 
-//    @Redirect(method = "createEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/vehicle/BoatEntity;<init>(Lnet/minecraft/world/World;DDD)V"))
-//    private void ER$createBoat(BoatEntity instance, World world, double x, double y, double z){
-//        return boatItem.asItem() instanceof IronBoatItem ? new IronBoatEntity(world, new Vec3d(x, y, z)) : new BoatEntity(world, x, y, z);
-//    }
+            cir.setReturnValue(new IronBoatEntity(world, hitResult.getPos().add(0.0D, 0.1D, 0.0D), durability));
+        }
+    }
 }
