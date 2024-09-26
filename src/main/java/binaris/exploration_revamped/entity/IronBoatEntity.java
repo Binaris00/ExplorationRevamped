@@ -24,7 +24,7 @@ public class IronBoatEntity extends BoatEntity {
     public IronBoatEntity(EntityType<? extends BoatEntity> entityType, World world) {
         super(entityType, world);
         this.intersectionChecked = true;
-        this.durability = IronBoatItem.DURABILITY_DEFAULT; // Default durability of 20 minutes
+        this.durability = IronBoatItem.DURABILITY_DEFAULT;
     }
 
     public IronBoatEntity(World world, Vec3d vec3d, int durability){
@@ -79,11 +79,17 @@ public class IronBoatEntity extends BoatEntity {
     public void tick() {
         super.tick();
 
+        if(this.age <= 10) {
+            this.refreshPositionAndAngles(this.getPos(), this.getYaw(), this.getPitch());
+        }
+
         if (this.isAlive() && !this.getWorld().isClient) {
             if (durability > 0) {
                 if (this.hasPassengers()) {
                     durability--;
+                    updateItemDurability();
 
+                    // Notify player about remaining durability
                     Entity passenger = this.getFirstPassenger();
                     if (passenger instanceof PlayerEntity player && durability % 1200 == 0) {
                         player.sendMessage(Text.translatable("boat.entity.exploration_revamped.durability_message", durability / 1200), true);
@@ -99,5 +105,21 @@ public class IronBoatEntity extends BoatEntity {
                 this.discard();
             }
         }
+    }
+
+    private void updateItemDurability() {
+//        if (this.hasPassengers()) {
+//            Entity passenger = this.getFirstPassenger();
+//            if (passenger instanceof PlayerEntity player) {
+//                ItemStack boatItem = player.getMainHandStack();
+//
+//                if (boatItem.getItem() == ItemRegistries.IRON_BOAT_ITEM) {
+//                    NbtCompound nbt = boatItem.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+//                    nbt.putInt("Durability", durability);
+//                    boatItem.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+//                    boatItem.setDamage(IronBoatItem.DURABILITY_DEFAULT - durability); // Update durability display
+//                }
+//            }
+//        }
     }
 }

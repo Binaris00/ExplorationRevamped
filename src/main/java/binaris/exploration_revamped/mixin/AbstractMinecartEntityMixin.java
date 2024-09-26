@@ -1,14 +1,12 @@
 package binaris.exploration_revamped.mixin;
 
+import binaris.exploration_revamped.block.NormalPoweredRail;
+import binaris.exploration_revamped.block.SuperPoweredRail;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.PoweredRailBlock;
-import net.minecraft.block.RailBlock;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -35,28 +33,36 @@ public class AbstractMinecartEntityMixin {
     private double currentMaxSpeed = VANILLA_MAX_SPEED;
     @Unique
     private double lastMaxSpeed = VANILLA_MAX_SPEED;
-    @Unique
-    private Vec3d lastSpeedPos = null;
-    @Unique
-    private long lastSpeedTime = 0;
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void tick(CallbackInfo ci) {
+    public void ER$tick(CallbackInfo ci) {
         clampVelocity();
     }
 
     @Redirect(method = "moveOnRail", at = @At(value = "INVOKE", ordinal = 0, target = "java/lang/Math.min(DD)D"))
-    public double speedClamp(double d1, double d2) {
+    public double ER$speedClamp(double d1, double d2) {
         final double maxSpeed = getModifiedMaxSpeed();
         return maxSpeed == VANILLA_MAX_SPEED ? Math.min(d1, d2)
                 : Math.min(maxSpeed * SQRT_TWO, d2);
     }
 
     @Inject(method = "getMaxSpeed", at = @At("HEAD"), cancellable = true)
-    protected void getMaxSpeed(CallbackInfoReturnable<Double> cir) {
+    protected void ER$getMaxSpeed(CallbackInfoReturnable<Double> cir) {
         final double maxSpeed = getModifiedMaxSpeed();
         if (maxSpeed != VANILLA_MAX_SPEED) {
             cir.setReturnValue(maxSpeed);
+        }
+    }
+
+    @Inject(method = "moveOnRail", at = @At("HEAD"))
+    private void ER$moveOnRail(BlockPos pos, BlockState state, CallbackInfo ci){
+        if (state.getBlock() instanceof SuperPoweredRail) {
+            boolean powered = state.get(SuperPoweredRail.POWERED);
+            if(powered) minecart.setVelocity(minecart.getVelocity().multiply(4.5));
+        }
+
+        if(state.getBlock() instanceof NormalPoweredRail) {
+            minecart.setVelocity(minecart.getVelocity().multiply(3.5));
         }
     }
 
@@ -79,17 +85,16 @@ public class AbstractMinecartEntityMixin {
             if (shape == RailShape.NORTH_EAST || shape == RailShape.NORTH_WEST || shape == RailShape.SOUTH_EAST || shape == RailShape.SOUTH_WEST) {
                 return currentMaxSpeed = VANILLA_MAX_SPEED;
             } else {
-                final BlockState underState = minecart.getWorld().getBlockState(currentPos.down());
-                final Identifier underBlockId = Registries.BLOCK.getId(underState.getBlock());
-                Integer speedLimit = 10;
-                if(nextState.getBlock() instanceof RailBlock) speedLimit = minecart instanceof FurnaceMinecartEntity ? 17 : 12;
-                if(nextState.getBlock() instanceof PoweredRailBlock) speedLimit = minecart instanceof FurnaceMinecartEntity ? 25 : 16;
-
-                if (speedLimit != null) {
-                    return currentMaxSpeed = speedLimit / 20.0;
-                } else {
-                    return currentMaxSpeed = VANILLA_MAX_SPEED;
+                // Vanilla speed limit
+                int speedLimit = 8;
+                if(nextState.getBlock() instanceof NormalPoweredRail) speedLimit = minecart instanceof FurnaceMinecartEntity ? 12 : 17;
+                if(nextState.getBlock() instanceof SuperPoweredRail) {
+                    boolean powered = nextState.get(SuperPoweredRail.POWERED);
+                    if(powered) speedLimit = minecart instanceof FurnaceMinecartEntity ? 16 : 25;
+                    else speedLimit = 3;
                 }
+
+                return currentMaxSpeed = speedLimit / 20.0;
             }
         } else {
             return currentMaxSpeed = VANILLA_MAX_SPEED;

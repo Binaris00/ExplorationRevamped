@@ -1,14 +1,17 @@
 package binaris.exploration_revamped;
 
+import binaris.exploration_revamped.registries.BlockRegistries;
 import binaris.exploration_revamped.registries.EntityRegistries;
 import binaris.exploration_revamped.registries.ItemRegistries;
 import binaris.exploration_revamped.renderer.IronBoatRenderer;
 import binaris.exploration_revamped.util.CompassUtil;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.BoatEntityModel;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -30,6 +33,9 @@ public class ERClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		EntityRendererRegistry.register(EntityRegistries.IRON_BOAT_ENTITY, IronBoatRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(IronBoatRenderer.LOCATION, BoatEntityModel::getTexturedModelData);
+
+		BlockRenderLayerMap.INSTANCE.putBlock(BlockRegistries.NORMAL_POWERED_RAIL, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(BlockRegistries.SUPER_POWERED_RAIL, RenderLayer.getCutout());
 
 		registerCompassModel(ItemRegistries.SCULK_COMPASS_ITEM);
 		registerCompassModel(ItemRegistries.COPPER_COMPASS_ITEM);

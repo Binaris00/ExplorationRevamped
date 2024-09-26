@@ -1,15 +1,13 @@
 package binaris.exploration_revamped.mixin;
 
+import binaris.exploration_revamped.block.NormalPoweredRail;
+import binaris.exploration_revamped.block.SuperPoweredRail;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.PoweredRailBlock;
-import net.minecraft.block.RailBlock;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -18,6 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FurnaceMinecartEntity.class)
@@ -53,6 +52,18 @@ public abstract class FurnaceMinecartEntityMixin extends AbstractMinecartEntity 
         }
     }
 
+    @Inject(method = "moveOnRail", at = @At("HEAD"))
+    private void ER$moveOnRail(BlockPos pos, BlockState state, CallbackInfo ci){
+        if (state.getBlock() instanceof SuperPoweredRail) {
+            boolean powered = state.get(SuperPoweredRail.POWERED);
+            if(powered) minecart.setVelocity(minecart.getVelocity().multiply(5.5));
+        }
+
+        if(state.getBlock() instanceof NormalPoweredRail) {
+            minecart.setVelocity(minecart.getVelocity().multiply(4.5));
+        }
+    }
+
     @Unique
     private double getModifiedMaxSpeed() {
         final BlockPos currentPos = BlockPos.ofFloored(minecart.getPos());
@@ -73,16 +84,11 @@ public abstract class FurnaceMinecartEntityMixin extends AbstractMinecartEntity 
                 return currentMaxSpeed = VANILLA_MAX_SPEED;
             } else {
                 final BlockState underState = minecart.getWorld().getBlockState(currentPos.down());
-                final Identifier underBlockId = Registries.BLOCK.getId(underState.getBlock());
-                Integer speedLimit = 10;
-                if(nextState.getBlock() instanceof RailBlock) speedLimit = minecart instanceof FurnaceMinecartEntity ? 17 : 12;
-                if(nextState.getBlock() instanceof PoweredRailBlock) speedLimit = minecart instanceof FurnaceMinecartEntity ? 25 : 16;
+                int speedLimit = 10;
+                if(nextState.getBlock() instanceof NormalPoweredRail) speedLimit = minecart instanceof FurnaceMinecartEntity ? 12 : 17;
+                if(nextState.getBlock() instanceof SuperPoweredRail) speedLimit = minecart instanceof FurnaceMinecartEntity ? 16 : 25;
 
-                if (speedLimit != null) {
-                    return currentMaxSpeed = speedLimit / 20.0;
-                } else {
-                    return currentMaxSpeed = VANILLA_MAX_SPEED;
-                }
+                return currentMaxSpeed = speedLimit / 20.0;
             }
         } else {
             return currentMaxSpeed = VANILLA_MAX_SPEED;

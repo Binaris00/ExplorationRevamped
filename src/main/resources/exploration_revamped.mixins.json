@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractMinecartEntityMixin",
+    "AbstractRailBlockMixin",
     "BoatEntityMixin",
     "BoatItemMixin",
     "EntityMixin",

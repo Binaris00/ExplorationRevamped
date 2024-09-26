@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "shape=ascending_east": {
+      "model": "exploration_revamped:block/normal_powered_rail_raised_ne",
+      "y": 90
+    },
+    "shape=ascending_north": {
+      "model": "exploration_revamped:block/normal_powered_rail_raised_ne"
+    },
+    "shape=ascending_south": {
+      "model": "exploration_revamped:block/normal_powered_rail_raised_sw"
+    },
+    "shape=ascending_west": {
+      "model": "exploration_revamped:block/normal_powered_rail_raised_sw",
+      "y": 90
+    },
+    "shape=east_west": {
+      "model": "exploration_revamped:block/normal_powered_rail",
+      "y": 90
+    },
+    "shape=north_south": {
+      "model": "exploration_revamped:block/normal_powered_rail"
+    }
+  }
+}

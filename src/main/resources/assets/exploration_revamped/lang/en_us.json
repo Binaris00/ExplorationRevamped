@@ -6,7 +6,13 @@
 
   "item.exploration_revamped.sculk_compass": "Sculk Compass",
   "item.exploration_revamped.log_compass": "Log Compass",
-    "item.exploration_revamped.copper_compass": "Copper Compass",
+  "item.exploration_revamped.copper_compass": "Copper Compass",
+  "item.exploration_revamped.iron_boat": "Iron Boat",
 
-  "boat.entity.exploration_revamped.durability_message": "Boat durability: %s minutes left"
+  "boat.entity.exploration_revamped.durability_message": "Boat durability: %s minutes left",
+  "item.exploration_revamped.build_compass.tooltip": "Right click to search the structure.",
+
+  "block.exploration_revamped.normal_powered_rail": "Normal Powered Rail",
+  "block.exploration_revamped.super_powered_rail": "Super Powered Rail"
+
 }

@@ -1,8 +1,10 @@
 package binaris.exploration_revamped;
 
+import binaris.exploration_revamped.registries.BlockRegistries;
 import binaris.exploration_revamped.registries.EntityRegistries;
 import binaris.exploration_revamped.registries.ItemGroupRegistries;
 import binaris.exploration_revamped.registries.ItemRegistries;
+import binaris.exploration_revamped.util.CustomLootTables;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,9 +20,11 @@ public class ERCommonMod implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Initializing Exploration Revamped");
 		EREventsHandler.init();
+		BlockRegistries.init();
 		ItemRegistries.init();
 		EntityRegistries.init();
 		ItemGroupRegistries.init();
+		CustomLootTables.init();
 	}
 
 	public static void logDebug(String message) {

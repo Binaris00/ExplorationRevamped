@@ -43,7 +43,7 @@ public final class EREventsHandler {
 
         AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 
-            if(entity instanceof VillagerEntity villager && player.getMainHandStack().getItem() instanceof RerollItem rerollItem && player.getItemCooldownManager().isCoolingDown(rerollItem)){
+            if(entity instanceof VillagerEntity villager && player.getMainHandStack().getItem() instanceof RerollItem rerollItem && !player.getItemCooldownManager().isCoolingDown(rerollItem)){
                 if (world.isClient) {
                     villager.produceParticles(ParticleTypes.HAPPY_VILLAGER);
                     return ActionResult.SUCCESS;

@@ -27,6 +27,8 @@ public final class ItemGroupRegistries {
                             entries.add(new ItemStack(ItemRegistries.SCULK_COMPASS_ITEM));
                             entries.add(new ItemStack(ItemRegistries.LOG_COMPASS_ITEM));
                             entries.add(new ItemStack(ItemRegistries.COPPER_COMPASS_ITEM));
+                            entries.add(new ItemStack(ItemRegistries.SUPER_POWERED_RAIL_ITEM));
+                            entries.add(new ItemStack(ItemRegistries.NORMAL_POWERED_RAIL_ITEM));
                         })
                 .build());
     }

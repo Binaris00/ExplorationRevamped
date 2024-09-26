@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_rail_raised_ne",
+  "textures": {
+    "rail": "exploration_revamped:block/normal_powered_rail"
+  }
+}

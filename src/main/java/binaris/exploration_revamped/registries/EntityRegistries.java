@@ -15,7 +15,7 @@ public final class EntityRegistries {
             Registries.ENTITY_TYPE,
             Identifier.of(ERCommonMod.MOD_ID, "iron_boat"),
             FabricEntityTypeBuilder.<IronBoatEntity>create(SpawnGroup.MISC, IronBoatEntity::new)
-                    .dimensions(EntityDimensions.fixed(1.375F, 0.5625F).withEyeHeight(0.5625F))
+                    .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
                     .trackRangeBlocks(10)
                     .build());
 

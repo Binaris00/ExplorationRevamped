@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "exploration_revamped:block/super_powered_rail_on"
+  }
+}
